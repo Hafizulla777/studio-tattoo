@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOIR INK STUDIO | Premium Tattoo Artistry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Cormorant Garamond', 'serif'],
+            body: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            bg: '#0a0a0a',
+            fg: '#f5f5f0',
+            muted: '#6b6b6b',
+            accent: '#c9a227',
+            card: '#141414',
+            border: '#2a2a2a',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #f5f5f0;
+      --muted: #6b6b6b;
+      --accent: #c9a227;
+      --card: #141414;
+      --border: #2a2a2a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 4px;
+    }
+
+    /* Typography */
+    .font-display {
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes lineExpand {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.4;
+      }
+      50% {
+        opacity: 0.8;
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-left.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-right.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-left, .reveal-right {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Hero section */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(201, 162, 39, 0.15), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(201, 162, 39, 0.1), transparent),
+        linear-gradient(180deg, var(--bg) 0%, #0f0f0f 100%);
+    }
+
+    .hero-lines {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      opacity: 0.1;
+    }
+
+    .hero-line {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .floating-element {
+      position: absolute;
+      border: 1px solid rgba(201, 162, 39, 0.2);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1.5rem 2rem;
+      transition: all 0.4s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+    }
+
+    .nav-link {
+      position: relative;
+      color: var(--fg);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 600;
+      font-size: 0.875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(201, 162, 39, 0.3);
+    }
+
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: transparent;
+      color: var(--fg);
+      font-weight: 500;
+      font-size: 0.875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    /* Gallery */
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(10, 10, 10, 0.9) 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    /* Filter buttons */
+    .filter-btn {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover {
+      color: var(--fg);
+    }
+
+    .filter-btn.active {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .filter-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Artist cards */
+    .artist-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      transition: all 0.4s ease;
+    }
+
+    .artist-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .artist-image {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+    }
+
+    .artist-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%);
+      transition: all 0.5s ease;
+    }
+
+    .artist-card:hover .artist-image img {
+      filter: grayscale(0%);
+      transform: scale(1.05);
+    }
+
+    /* Services */
+    .service-card {
+      position: relative;
+      padding: 2.5rem;
+      background: linear-gradient(135deg, var(--card) 0%, rgba(20, 20, 20, 0.5) 100%);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 0;
+      background: var(--accent);
+      transition: height 0.4s ease;
+    }
+
+    .service-card:hover::before {
+      height: 100%;
+    }
+
+    .service-card:hover {
+      border-color: rgba(201, 162, 39, 0.3);
+      transform: translateX(8px);
+    }
+
+    .service-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 700;
+      color: rgba(201, 162, 39, 0.1);
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      line-height: 1;
+    }
+
+    /* Testimonials */
+    .testimonial-card {
+      position: relative;
+      padding: 2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      border-color: rgba(201, 162, 39, 0.3);
+    }
+
+    .quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6rem;
+      color: var(--accent);
+      opacity: 0.2;
+      position: absolute;
+      top: -1rem;
+      left: 1rem;
+      line-height: 1;
+    }
+
+    /* Form */
+    .form-input {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--muted);
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(20px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      transform: scale(0.9);
+      transition: transform 0.4s ease;
+    }
+
+    .modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -3rem;
+      right: 0;
+      background: none;
+      border: none;
+      color: var(--fg);
+      font-size: 2rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--accent);
+    }
+
+    /* Section divider */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 1500;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .mobile-menu.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-menu-link {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      color: var(--fg);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .mobile-menu-link:hover {
+      color: var(--accent);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 2000;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--fg);
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* Stats counter animation */
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    /* Cursor follower */
+    .cursor-follower {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .cursor-follower.hovering {
+      width: 50px;
+      height: 50px;
+      background: rgba(201, 162, 39, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .cursor-follower {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cursor follower -->
+  <div class="cursor-follower" id="cursor"></div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <a href="#" class="font-display text-2xl font-bold tracking-wider">
+        NOIR<span class="text-accent">.</span>INK
+      </a>
+      <div class="nav-links flex items-center gap-8">
+        <a href="#gallery" class="nav-link">Gallery</a>
+        <a href="#artists" class="nav-link">Artists</a>
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#contact" class="btn-primary">Book Now</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#gallery" class="mobile-menu-link">Gallery</a>
+    <a href="#artists" class="mobile-menu-link">Artists</a>
+    <a href="#services" class="mobile-menu-link">Services</a>
+    <a href="#about" class="mobile-menu-link">About</a>
+    <a href="#contact" class="mobile-menu-link">Contact</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    
+    <!-- Decorative lines -->
+    <div class="hero-lines">
+      <div class="hero-line" style="top: 20%; width: 60%; left: 10%;"></div>
+      <div class="hero-line" style="top: 40%; width: 40%; right: 5%; animation-delay: 1s;"></div>
+      <div class="hero-line" style="top: 60%; width: 50%; left: 20%; animation-delay: 2s;"></div>
+      <div class="hero-line" style="top: 80%; width: 30%; right: 15%; animation-delay: 0.5s;"></div>
+    </div>
+
+    <!-- Floating elements -->
+    <div class="floating-element" style="width: 300px; height: 300px; top: 10%; right: -100px; animation-delay: 0s;"></div>
+    <div class="floating-element" style="width: 200px; height: 200px; bottom: 20%; left: -50px; animation-delay: 2s;"></div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="text-accent text-sm font-medium tracking-widest uppercase mb-6 reveal" style="transition-delay: 0.1s;">
+            Est. 2008 — Mumbai, India
+          </p>
+          <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-none mb-8 reveal" style="transition-delay: 0.2s;">
+            Where Skin<br>
+            <span class="text-accent">Becomes</span><br>
+            Canvas
+          </h1>
+          <p class="text-muted text-lg md:text-xl max-w-lg mb-10 reveal" style="transition-delay: 0.3s;">
+            Award-winning tattoo studio specializing in custom designs, fine line work, and transformative body art. Your vision, our craft.
+          </p>
+          <div class="flex flex-wrap gap-4 reveal" style="transition-delay: 0.4s;">
+            <a href="#contact" class="btn-primary">
+              Book Consultation
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a href="#gallery" class="btn-outline">
+              View Portfolio
+            </a>
+          </div>
+        </div>
+        <div class="relative reveal" style="transition-delay: 0.5s;">
+          <div class="aspect-square relative">
+            <div class="absolute inset-0 border border-accent/20 rotate-6"></div>
+            <div class="absolute inset-0 border border-accent/10 -rotate-3"></div>
+            <img 
+              src="https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?w=600&h=600&fit=crop" 
+              alt="Tattoo art design" 
+              class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+            >
+            <div class="absolute -bottom-6 -left-6 bg-card border border-border p-6">
+              <p class="stat-number" id="counter1">0</p>
+              <p class="text-muted text-sm tracking-wider uppercase">Tattoos Created</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+      <span class="text-muted text-xs tracking-widest uppercase">Scroll</span>
+      <div class="w-px h-12 bg-gradient-to-b from-accent to-transparent"></div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-20 border-y border-border">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="text-center reveal">
+          <p class="stat-number" id="counter2">0</p>
+          <p class="text-muted text-sm tracking-wider uppercase mt-2">Years Experience</p>
+        </div>
+        <div class="text-center reveal" style="transition-delay: 0.1s;">
+          <p class="stat-number" id="counter3">0</p>
+          <p class="text-muted text-sm tracking-wider uppercase mt-2">Happy Clients</p>
+        </div>
+        <div class="text-center reveal" style="transition-delay: 0.2s;">
+          <p class="stat-number" id="counter4">0</p>
+          <p class="text-muted text-sm tracking-wider uppercase mt-2">Award Winning</p>
+        </div>
+        <div class="text-center reveal" style="transition-delay: 0.3s;">
+          <p class="stat-number">5</p>
+          <p class="text-muted text-sm tracking-wider uppercase mt-2">Master Artists</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="py-24" id="gallery">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-accent text-sm font-medium tracking-widest uppercase mb-4 reveal">Portfolio</p>
+        <h2 class="font-display text-4xl md:text-6xl font-bold reveal" style="transition-delay: 0.1s;">
+          Our Latest Work
+        </h2>
+      </div>
+
+      <!-- Filter buttons -->
+      <div class="flex flex-wrap justify-center gap-2 mb-12 reveal" style="transition-delay: 0.2s;">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="realistic">Realistic</button>
+        <button class="filter-btn" data-filter="tribal">Tribal</button>
+        <button class="filter-btn" data-filter="geometric">Geometric</button>
+        <button class="filter-btn" data-filter="fineline">Fine Line</button>
+        <button class="filter-btn" data-filter="watercolor">Watercolor</button>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="galleryGrid">
+        <!-- Items will be rendered by JS -->
+      </div>
+
+      <div class="text-center mt-12 reveal">
+        <a href="#" class="btn-outline">View Full Portfolio</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Artists Section -->
+  <section class="py-24 bg-card/50" id="artists">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center mb-20">
+        <div>
+          <p class="text-accent text-sm font-medium tracking-widest uppercase mb-4 reveal">Our Team</p>
+          <h2 class="font-display text-4xl md:text-6xl font-bold mb-6 reveal" style="transition-delay: 0.1s;">
+            Meet The Artists
+          </h2>
+          <p class="text-muted text-lg reveal" style="transition-delay: 0.2s;">
+            Our team of master artists brings decades of combined experience across every style imaginable. Each piece is a collaboration between your vision and their expertise.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-4 reveal" style="transition-delay: 0.3s;">
+          <div class="bg-card border border-border p-6">
+            <p class="stat-number">15+</p>
+            <p class="text-muted text-sm tracking-wider uppercase">Years Combined</p>
+          </div>
+          <div class="bg-card border border-border p-6">
+            <p class="stat-number">50+</p>
+            <p class="text-muted text-sm tracking-wider uppercase">Awards Won</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="artistsGrid">
+        <!-- Artist cards will be rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-24" id="services">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-accent text-sm font-medium tracking-widest uppercase mb-4 reveal">What We Offer</p>
+        <h2 class="font-display text-4xl md:text-6xl font-bold reveal" style="transition-delay: 0.1s;">
+          Our Services
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6" id="servicesGrid">
+        <!-- Services will be rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="py-24 bg-card/50" id="about">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-accent text-sm font-medium tracking-widest uppercase mb-4 reveal">Testimonials</p>
+        <h2 class="font-display text-4xl md:text-6xl font-bold reveal" style="transition-delay: 0.1s;">
+          Client Stories
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6" id="testimonialsGrid">
+        <!-- Testimonials will be rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="py-24" id="contact">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16">
+        <div>
+          <p class="text-accent text-sm font-medium tracking-widest uppercase mb-4 reveal">Get In Touch</p>
+          <h2 class="font-display text-4xl md:text-6xl font-bold mb-6 reveal" style="transition-delay: 0.1s;">
+            Book Your Session
+          </h2>
+          <p class="text-muted text-lg mb-10 reveal" style="transition-delay: 0.2s;">
+            Ready to bring your vision to life? Fill out the form below and we'll get back to you within 24 hours to schedule your consultation.
+          </p>
+
+          <div class="space-y-6 reveal" style="transition-delay: 0.3s;">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-accent/10 flex items-center justify-center flex-shrink-0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-accent">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-medium mb-1">Studio Location</h4>
+                <p class="text-muted">42 Art District, Andheri West<br>Mumbai, Maharashtra 400058</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-accent/10 flex items-center justify-center flex-shrink-0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-accent">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-medium mb-1">Phone</h4>
+                <p class="text-muted">+91 98765 43210</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-accent/10 flex items-center justify-center flex-shrink-0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-accent">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-medium mb-1">Working Hours</h4>
+                <p class="text-muted">Mon - Sat: 11:00 AM - 9:00 PM<br>Sunday: By Appointment</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal" style="transition-delay: 0.4s;">
+          <form class="space-y-6" id="contactForm">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="form-label" for="firstName">First Name</label>
+                <input type="text" id="firstName" class="form-input" placeholder="John" required>
+              </div>
+              <div>
+                <label class="form-label" for="lastName">Last Name</label>
+                <input type="text" id="lastName" class="form-input" placeholder="Doe" required>
+              </div>
+            </div>
+            <div>
+              <label class="form-label" for="email">Email</label>
+              <input type="email" id="email" class="form-input" placeholder="john@example.com" required>
+            </div>
+            <div>
+              <label class="form-label" for="phone">Phone</label>
+              <input type="tel" id="phone" class="form-input" placeholder="+91 98765 43210">
+            </div>
+            <div>
+              <label class="form-label" for="style">Preferred Style</label>
+              <select id="style" class="form-input">
+                <option value="">Select a style</option>
+                <option value="realistic">Realistic</option>
+                <option value="tribal">Tribal</option>
+                <option value="geometric">Geometric</option>
+                <option value="fineline">Fine Line</option>
+                <option value="watercolor">Watercolor</option>
+                <option value="traditional">Traditional</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label" for="message">Tell Us About Your Vision</label>
+              <textarea id="message" class="form-input" rows="4" placeholder="Describe your tattoo idea, size, placement, and any reference images you might have..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary w-full justify-center">
+              Submit Inquiry
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 border-t border-border">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8 mb-12">
+        <div class="md:col-span-2">
+          <a href="#" class="font-display text-2xl font-bold tracking-wider inline-block mb-4">
+            NOIR<span class="text-accent">.</span>INK
+          </a>
+          <p class="text-muted max-w-sm">
+            Premium tattoo studio in Mumbai, specializing in custom designs and transformative body art since 2008.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-medium mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#gallery" class="text-muted hover:text-accent transition-colors">Gallery</a></li>
+            <li><a href="#artists" class="text-muted hover:text-accent transition-colors">Artists</a></li>
+            <li><a href="#services" class="text-muted hover:text-accent transition-colors">Services</a></li>
+            <li><a href="#contact" class="text-muted hover:text-accent transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-medium mb-4">Follow Us</h4>
+          <div class="flex gap-4">
+            <a href="#" class="w-10 h-10 bg-card border border-border flex items-center justify-center hover:border-accent hover:text-accent transition-all" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </a>
+            <a href="#" class="w-10 h-10 bg-card border border-border flex items-center justify-center hover:border-accent hover:text-accent transition-all" aria-label="Facebook">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </a>
+            <a href="#" class="w-10 h-10 bg-card border border-border flex items-center justify-center hover:border-accent hover:text-accent transition-all" aria-label="Twitter">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="section-divider mb-8"></div>
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-muted text-sm">2024 NOIR INK Studio. All rights reserved.</p>
+        <div class="flex gap-6">
+          <a href="#" class="text-muted text-sm hover:text-accent transition-colors">Privacy Policy</a>
+          <a href="#" class="text-muted text-sm hover:text-accent transition-colors">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+      <img src="" alt="" id="modalImage" class="max-w-full max-h-full object-contain">
+    </div>
+  </div>
+
+  <script>
+    // ==================== DATA ====================
+    const galleryData = [
+      { id: 1, src: 'https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?w=400&h=500&fit=crop', category: 'realistic', title: 'Phoenix Rising', artist: 'Vikram Singh' },
+      { id: 2, src: 'https://images.unsplash.com/photo-1562962230-16e4623d36e6?w=400&h=400&fit=crop', category: 'geometric', title: 'Sacred Geometry', artist: 'Maya Sharma' },
+      { id: 3, src: 'https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?w=400&h=500&fit=crop', category: 'tribal', title: 'Maori Heritage', artist: 'Arjun Patel' },
+      { id: 4, src: 'https://images.unsplash.com/photo-1542727866-6d67b3739c31?w=400&h=400&fit=crop', category: 'fineline', title: 'Botanical Study', artist: 'Priya Nair' },
+      { id: 5, src: 'https://images.unsplash.com/photo-1604941509298-d800fe17a0c0?w=400&h=500&fit=crop', category: 'watercolor', title: 'Ocean Dreams', artist: 'Vikram Singh' },
+      { id: 6, src: 'https://images.unsplash.com/photo-1590246814883-57c511e058c9?w=400&h=400&fit=crop', category: 'realistic', title: 'Portrait', artist: 'Maya Sharma' },
+      { id: 7, src: 'https://images.unsplash.com/photo-1473032762175-464e21e6b83c?w=400&h=500&fit=crop', category: 'geometric', title: 'Mandala Flow', artist: 'Arjun Patel' },
+      { id: 8, src: 'https://images.unsplash.com/photo-1475403614135-5f1aa0eb5015?w=400&h=400&fit=crop', category: 'fineline', title: 'Minimalist Arrow', artist: 'Priya Nair' },
+    ];
+
+    const artistsData = [
+      {
+        name: 'Vikram Singh',
+        specialty: 'Realistic & Portrait',
+        experience: '12 Years',
+        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop',
+        bio: 'Specializes in hyper-realistic portraits and black & grey work.'
+      },
+      {
+        name: 'Maya Sharma',
+        specialty: 'Geometric & Mandala',
+        experience: '8 Years',
+        image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=500&fit=crop',
+        bio: 'Master of sacred geometry and intricate mandala designs.'
+      },
+      {
+        name: 'Arjun Patel',
+        specialty: 'Tribal & Traditional',
+        experience: '15 Years',
+        image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=500&fit=crop',
+        bio: 'Expert in traditional tribal patterns and bold traditional work.'
+      },
+    ];
+
+    const servicesData = [
+      { number: '01', title: 'Custom Design', description: 'Fully bespoke tattoo designs created from your ideas, references, and our artistic vision. Every piece is unique to you.', price: 'From Rs. 5,000' },
+      { number: '02', title: 'Cover-Up Work', description: 'Transform old or unwanted tattoos into stunning new pieces. Our artists specialize in creative cover-up solutions.', price: 'From Rs. 8,000' },
+      { number: '03', title: 'Fine Line Tattoos', description: 'Delicate, minimalist designs with precise linework. Perfect for subtle, elegant body art.', price: 'From Rs. 3,000' },
+      { number: '04', title: 'Portrait Tattoos', description: 'Photorealistic portraits of loved ones, pets, or icons. Our specialty in capturing likenesses.', price: 'From Rs. 15,000' },
+    ];
+
+    const testimonialsData = [
+      { name: 'Rahul Mehta', text: 'Vikram created an incredible portrait of my father. The detail and emotion captured is beyond what I imagined. True artistry.', rating: 5 },
+      { name: 'Ananya Krishnan', text: 'My geometric mandala by Maya is absolutely stunning. The precision and symmetry are perfect. I get compliments daily!', rating: 5 },
+      { name: 'Sameer Joshi', text: 'Had an old tattoo covered up by Arjun. He transformed a mistake into a masterpiece. Highly recommend this studio.', rating: 5 },
+    ];
+
+    // ==================== DOM ELEMENTS ====================
+    const nav = document.getElementById('nav');
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const galleryGrid = document.getElementById('galleryGrid');
+    const artistsGrid = document.getElementById('artistsGrid');
+    const servicesGrid = document.getElementById('servicesGrid');
+    const testimonialsGrid = document.getElementById('testimonialsGrid');
+    const modal = document.getElementById('modal');
+    const modalImage = document.getElementById('modalImage');
+    const modalClose = document.getElementById('modalClose');
+    const cursor = document.getElementById('cursor');
+    const contactForm = document.getElementById('contactForm');
+
+    // ==================== RENDER FUNCTIONS ====================
+    function renderGallery(filter = 'all') {
+      const filtered = filter === 'all' 
+        ? galleryData 
+        : galleryData.filter(item => item.category === filter);
+
+      galleryGrid.innerHTML = filtered.map((item, index) => `
+        <div class="gallery-item reveal" style="transition-delay: ${index * 0.1}s;" data-src="${item.src.replace('w=400', 'w=800')}">
+          <div class="aspect-[4/5]">
+            <img src="${item.src}" alt="${item.title}" loading="lazy">
+          </div>
+          <div class="gallery-overlay">
+            <p class="text-accent text-sm tracking-wider uppercase">${item.category}</p>
+            <h4 class="font-display text-xl font-bold">${item.title}</h4>
+            <p class="text-muted text-sm">by ${item.artist}</p>
+          </div>
+        </div>
+      `).join('');
+
+      // Re-attach click events and trigger reveal
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => openModal(item.dataset.src));
+      });
+
+      setTimeout(() => {
+        document.querySelectorAll('.gallery-item.reveal').forEach(el => el.classList.add('active'));
+      }, 100);
+    }
+
+    function renderArtists() {
+      artistsGrid.innerHTML = artistsData.map((artist, index) => `
+        <div class="artist-card reveal" style="transition-delay: ${index * 0.15}s;">
+          <div class="artist-image">
+            <img src="${artist.image}" alt="${artist.name}" loading="lazy">
+          </div>
+          <div class="p-6">
+            <h3 class="font-display text-2xl font-bold mb-1">${artist.name}</h3>
+            <p class="text-accent text-sm tracking-wider uppercase mb-3">${artist.specialty}</p>
+            <p class="text-muted text-sm mb-4">${artist.bio}</p>
+            <div class="flex items-center justify-between">
+              <span class="text-muted text-sm">${artist.experience}</span>
+              <a href="#contact" class="text-accent text-sm font-medium hover:underline">Book Now</a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderServices() {
+      servicesGrid.innerHTML = servicesData.map((service, index) => `
+        <div class="service-card reveal" style="transition-delay: ${index * 0.1}s;">
+          <span class="service-number">${service.number}</span>
+          <h3 class="font-display text-2xl font-bold mb-3">${service.title}</h3>
+          <p class="text-muted mb-4">${service.description}</p>
+          <p class="text-accent font-medium">${service.price}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderTestimonials() {
+      testimonialsGrid.innerHTML = testimonialsData.map((item, index) => `
+        <div class="testimonial-card reveal" style="transition-delay: ${index * 0.1}s;">
+          <span class="quote-mark">"</span>
+          <p class="text-muted mb-6 relative z-10">${item.text}</p>
+          <div class="flex items-center gap-1 mb-2">
+            ${Array(item.rating).fill().map(() => `
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-accent">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            `).join('')}
+          </div>
+          <p class="font-medium">${item.name}</p>
+        </div>
+      `).join('');
+    }
+
+    // ==================== MODAL ====================
+    function openModal(src) {
+      modalImage.src = src;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // ==================== NAVIGATION ====================
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      
+      if (currentScroll > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+      
+      lastScroll = currentScroll;
+    });
+
+    // Mobile menu
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.mobile-menu-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      });
+    });
+
+    // ==================== FILTER ====================
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderGallery(btn.dataset.filter);
+      });
+    });
+
+    // ==================== SCROLL REVEAL ====================
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    function initReveal() {
+      document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    // ==================== COUNTER ANIMATION ====================
+    function animateCounter(element, target) {
+      let current = 0;
+      const increment = target / 50;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          element.textContent = target.toLocaleString() + '+';
+          clearInterval(timer);
+        } else {
+          element.textContent = Math.floor(current).toLocaleString();
+        }
+      }, 30);
+    }
+
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = parseInt(entry.target.dataset.target);
+          if (target) {
+            animateCounter(entry.target, target);
+            counterObserver.unobserve(entry.target);
+          }
+        }
+      });
+    }, { threshold: 0.5 });
+
+    // ==================== CURSOR ====================
+    let cursorVisible = false;
+
+    document.addEventListener('mousemove', (e) => {
+      if (window.innerWidth <= 768) return;
+      
+      if (!cursorVisible) {
+        cursor.style.opacity = 1;
+        cursorVisible = true;
+      }
+      
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest('a, button, .gallery-item')) {
+        cursor.classList.add('hovering');
+      }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest('a, button, .gallery-item')) {
+        cursor.classList.remove('hovering');
+      }
+    });
+
+    // ==================== FORM ====================
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const btn = contactForm.querySelector('button[type="submit"]');
+      const originalText = btn.innerHTML;
+      
+      btn.innerHTML = `
+        <svg class="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+          <path d="M12 2a10 10 0 0 1 10 10" stroke-opacity="1"/>
+        </svg>
+        Sending...
+      `;
+      btn.disabled = true;
+      
+      setTimeout(() => {
+        btn.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Message Sent!
+        `;
+        btn.style.background = '#22c55e';
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.background = '';
+          btn.disabled = false;
+          contactForm.reset();
+        }, 2000);
+      }, 1500);
+    });
+
+    // ==================== INIT ====================
+    function init() {
+      // Render all sections
+      renderGallery();
+      renderArtists();
+      renderServices();
+      renderTestimonials();
+
+      // Set counter targets
+      document.getElementById('counter1').dataset.target = '2500';
+      document.getElementById('counter2').dataset.target = '16';
+      document.getElementById('counter3').dataset.target = '3200';
+      document.getElementById('counter4').dataset.target = '48';
+
+      // Observe counters
+      document.querySelectorAll('[data-target]').forEach(el => {
+        counterObserver.observe(el);
+      });
+
+      // Init scroll reveal
+      initReveal();
+
+      // Trigger hero animations
+      setTimeout(() => {
+        document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('active'));
+      }, 300);
+    }
+
+    // Start
+    document.addEventListener('DOMContentLoaded', init);
+
+    // Keyboard navigation for modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
